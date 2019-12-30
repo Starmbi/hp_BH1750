@@ -1,3 +1,3 @@
 # WikiTest
 Test for Wiki functions
-you will get a [full wiki](../../wiki)
+## Take a look at the comprehensive *[Wiki](../../wiki)!*
