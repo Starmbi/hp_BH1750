@@ -1,6 +1,5 @@
 # Arduino
-.development.*
-*.development
+.development
 
 # Prerequisites
 *.d
