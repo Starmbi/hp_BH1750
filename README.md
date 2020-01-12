@@ -3,6 +3,9 @@
 ### the most comprehensive library avialable
 #### for Arduino, ESP8266, ESP32...     
 -------------
+
+<img align="right" width="300" height="300" src="https://github.com/Starmbi/hp_BH1750/wiki/media/GY-302-GY-30.jpg">
+
 ### Do you need...
   * the total control over this sensor?
   * exact timings?
@@ -84,8 +87,7 @@ The data sheet describes that the ***MTreg* value is proportional to the measuri
 So, with this true conversion time we can calculate the conversion time for every *MTreg*! But is this true?  
 Here I made a few measurements with the trick above:  
 
-![alt text](/images/BH1750.png)
-<p align="center">
+![](/../../wiki/media/time_vs_MTreg.png)
 
 At first glance, the formula seems to be right.  
 We see that for both qualities (High/Low) the conversion time is proportional to the *MTreg*.  
