@@ -1,4 +1,4 @@
-# Light-Sensor BH1750
+# Light-Sensor BH1750 ![](https://img.shields.io/badge/Wiki-enabled-succsess)
 ## a high-performance non-blocking library
 ### the most comprehensive library avialable
 #### for Arduino, ESP8266, ESP32...     
