@@ -194,7 +194,7 @@ After each measurement the *MTReg* should be adjusted so that the measured brigh
 But this can be dangerous:  
 If the brightness increases you are out of the range of your maximal value an the sensor is saturated.  
 So it is better to go a few percent lower than the maximal value of the *MTreg*.  
-To minimize the change, being overexposed or underexposed, you can set the *MTreg* so that your value is in the middle of the range e.g to 50 %.  
+To minimize the change, being overexposed, you can set the *MTreg* so that your value is in the middle of the range e.g to 50 %.  
 
 Does it all sound pretty complicated?  
 With one line of code all this can be done for you! 
@@ -217,7 +217,7 @@ If the function detects, that the last result was overexposed it takes a short m
 
 If there are longer periods between the measurements, the last value is not so meaningful for a new calculation, because the brightness may have changed. In this case it would be better to alway's take a short measurement before the high resolution measurement. You will loose about 10 ms but at low intensities you do not have to repeat a 500 ms measurement.  
 You can easily force this with a second parameter for the function:  
-```sensor.adjustSettings(90,**TRUE**);``` Here the declaration of the function:  
+```sensor.adjustSettings(90,TRUE);``` Here the declaration of the function:  
 ```void adjustSettings(byte Percent = 50, bool forcePreShot=false);```  
 
 If you start the measurement in quality ```HIGH``` OR ```HIGH2``` this function will switch between this qualities if necessary.  
