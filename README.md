@@ -222,4 +222,4 @@ You can easily force this with a second parameter for the function:
 ```void adjustSettings(byte Percent = 50, bool forcePreShot=false);```  
 
 If you start the measurement in quality ```HIGH``` OR ```HIGH2``` this function will switch between this qualities if necessary.  
-If we start the measurement in quality ```LOW``` it will stay at this quality because it asumes that you want the highest speed.  
+If you start the measurement in quality ```LOW``` it will stay at this quality because it asumes that you want the highest speed.  
