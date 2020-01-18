@@ -106,21 +106,21 @@ And here is a working example of non-blocking readings at the fastest possible t
 hp_BH1750 sensor;                   //define the sensor
 void setup()
 {
-  sensor.init(toGround);            //A: set address and init sensor
+  sensor.begin(BH1750_TO_GROUND);            //A: set address and init sensor
   sensor.calibrateTiming();         //B: calibrate the timings, about 855ms with a bad chip
-  sensor.startMeasure();            //C: start the first measurement
+  sensor.start();            //C: start the first measurement
 }
 void loop()
 {
   if (sensor.hasValue()) {          //D: most important function of this library!
     float lux = sensor.readLux();   //E: read the result
-    sensor.startMeasure();          //F: start next measurement
+    sensor.start();          //F: start next measurement
   }
   // do a lot of other stuff here     G://
 }
 ```
 ### Some explanations to the code: 
-```At line A:``` We set the address (address pin toGround or toPower)
+```At line A:``` We set the address (address pin BH1750_TO_GROUND or BH1750_TO_VCC)
 Also we init the timing parameters according to the datasheet to the most pessimistic values.
 This ensures that the sensor will works correctly even with no calibration.
 
@@ -129,7 +129,7 @@ You can change the two MTreg-values, if you want, for example ```sensor.calibrat
 Since this only needs to be done once for each chip, the values can be stored in the eeprom or set directly in the code after test measurements. This library offers the appropriate functions for this.
 
 ```At line C:``` We start the measurement with default quality and *MTreg*.
-You can change this values, for example ```sensor.startMeasure(hp_BH1750_HIGH, 100);```  
+You can change this values, for example ```sensor.start(BH1750_QUALITY_HIGH, 100);```  
 
 ```At line D:``` Here comes the magic. At starting time the sensor sets a internal timer and calculates the conversion time for the given quality and *MTreg*.  
 If you ask ```sensor.hasValue()``` the function will return immediately without reading a value if the calculated conversion time is not finished yet. This is **30 times faster** than asking the sensor!  
@@ -143,7 +143,7 @@ If you are satisfied with a blocking read, the code becomes even easier:
 void loop()
 {
    float lux = sensor.readLux();   //E: read the result
-   sensor.startMeasure();          //F: start next measurement
+   sensor.start();                 //F: start next measurement
 }
 ```
 
@@ -204,7 +204,7 @@ With one line of code all this can be done for you!
  if (sensor.hasValue()) {          
    float lux = sensor.readLux();   
    sensor.adjustSettings(90);     //new line!
-   sensor.startMeasure();          
+   sensor.start();          
  }
  ```
  
