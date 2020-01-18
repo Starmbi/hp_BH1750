@@ -173,7 +173,7 @@ You can read it with ```sensor.getRaw()``` instead or additional to ```sensor.ge
 At each *MTreg* the lowest value is always 0 Lux .  
 Only the maximal lux value differs at different *MTreg's*.  
 
-With the highest *MTReg* of 254 you can reach only **7418** Lux but you have a high resolution of 7418/65535 = **0.11** Lux.  
+With the highest *MTReg* of 254 you can reach only **7418** Lux, but you have a high resolution of 7418/65535 = **0.11** Lux.  
 With the lowest *MTreg* of 31 you can reach **60778** Lux, but only have a resolution of 60778/65535 = **0.93** Lux.  
 
 If you need more then **60778** Lux you have to switch to from quality ```HIGH2```" to quality ```HIGH```.  
