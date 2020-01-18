@@ -142,8 +142,9 @@ If you are satisfied with a blocking read, the code becomes even easier:
 ```C++
 void loop()
 {
-   float lux = sensor.readLux();   //E: read the result
-   sensor.start();                 //F: start next measurement
+  sensor.start();                 //start measurement
+  float lux = sensor.readLux();   //read the result
+  
 }
 ```
 
