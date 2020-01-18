@@ -38,7 +38,7 @@ Click "Clone or download" -> "Download ZIP" button.
 
 For a project I need the exact timings for the start and the end time of a conversion.  
 This chip is well suited if you need a value every few seconds or minutes.  
-While the sensor provides good results, the design is terrible and makes it nearly impossible to obtain the time of beginning either of endig of a measurement.  
+While the sensor provides good results, the design is terrible and makes it nearly impossible to obtain the time of beginning either of ending of a measurement.  
 To understand this problem you should know the working principle of this chip:
 
 ## Working principle of BH1750
