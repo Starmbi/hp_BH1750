@@ -46,7 +46,7 @@ To understand this problem you should know the working principle of this chip:
 The sensor can measure in 3 different qualities: one ```low quality``` mode and two ```high quality``` modes.  
 To enhance the range, the sampling time is adjustable from 31 to 254.  
 However, this is not a measuring time in seconds or milliseconds, but it is called **M**easurement **T**ime **Reg**ister = ***MTreg***.  
-At [Autoranging](#autoranging-function) you can read more about *MTreg*.
+At [auto ranging](#autoranging-function) you can read more about *MTreg*.
 
 So let's take a look at the [datasheet](https://www.mouser.com/datasheet/2/348/bh1750fvi-e-186247.pdf "BH1750") 
 
