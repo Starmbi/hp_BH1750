@@ -1,7 +1,7 @@
 # Light-Sensor BH1750 [![](https://img.shields.io/badge/iki-available-succsess?style=plastic&logo=wikipedia)](https://github.com/Starmbi/hp_BH1750/wiki)
 ## a high-performance non-blocking library
 ### the most comprehensive library avialable
-#### for Arduino, ESP8266, ESP32...     
+#### tested with Arduino and ESP8266     
 -------------
 
 <img align="right" width="300" height="300" src="https://github.com/Starmbi/hp_BH1750/wiki/media/GY-302-GY-30.jpg">
@@ -45,7 +45,7 @@ To understand this problem you should know the working principle of this chip:
 
 The sensor can measure in 3 different qualities: one ```low quality``` mode and two ```high quality``` modes.  
 To enhance the range, the sampling time is adjustable from 31 to 254.  
-However, this is not a measuring time, but it is called **M**easurement **T**ime **Reg**ister = ***MTreg***.  
+However, this is not a measuring time in seconds or milliseconds, but it is called **M**easurement **T**ime **Reg**ister = ***MTreg***.  
 At [Autoranging](#autoranging-function) you can read more about *MTreg*.
 
 So let's take a look at the [datasheet](https://www.mouser.com/datasheet/2/348/bh1750fvi-e-186247.pdf "BH1750") 
@@ -76,7 +76,8 @@ And if the brightnesses are the same for successive measurements, you will never
 
 ### And here comes one trick of the library: ###  
 It is possible to reset the data register to zero (0) before starting a measurement.  
-So we ask the sensor for a new value until we get a value greater than zero.  
+If we ask the sensor for a result, directly after starting a new measurement, we will get a result of zero.  
+So we ask the sensor for a new value, until we get a value greater than zero.  
 (Yes we need a little amount of light for this.)  
 After getting a new result, we can stop the time since the start of the measurement.  
 
@@ -124,9 +125,10 @@ void loop()
 Also we init the timing parameters according to the datasheet to the most pessimistic values.
 This ensures that the sensor will works correctly even with no calibration.
 
-```At line B:``` We calibrate the Sensor. for this we use by defalult the hightest and lowest MTreg's (31 and 254) at both qualitys.
+```At line B:``` We calibrate the Sensor. For this we use by default the highest and lowest MTreg's (31 and 254) at both qualitys.
 You can change the two MTreg-values, if you want, for example ```sensor.calibrateTiming(50,150);```  
-Since this only needs to be done once for each chip, the values can be stored in the eeprom or set directly in the code after test measurements. This library offers the appropriate functions for this.
+Since this only needs to be done once for each chip, the values can be stored in the eeprom or set directly in the code after test measurements. This library offers the appropriate functions for this.  
+The easiest way is to always calibrate the sensor in the *setup* section, as shown above.
 
 ```At line C:``` We start the measurement with default quality and *MTreg*.
 You can change this values, for example ```sensor.start(BH1750_QUALITY_HIGH, 100);```  
@@ -191,9 +193,9 @@ But 4 times less sensitivity against 7.5 times faster conversion time is a good 
  
 ***To obtain the highest resolution you should change the MTreg and quality according to your brightness.***  
  
-After each measurement the *MTReg* should be adjusted so that the measured brightness is at the upper limit of the *MTreg* range.  
+After each measurement the *MTReg* should be adjusted, so that the measured brightness is at the upper limit of the *MTreg* range.  
 But this can be dangerous:  
-If the brightness increases you are out of the range of your maximal value an the sensor is saturated.  
+If the brightness increases, you are out of the range of your maximal value an the sensor is saturated.  
 So it is better to go a few percent lower than the maximal value of the *MTreg*.  
 To minimize the change, being overexposed, you can set the *MTreg* so that your value is in the middle of the range e.g to 50 %.  
 
@@ -214,7 +216,7 @@ This is a very powerfull function.
 It takes the last measurement and calculates the new *MTReg* and quality so that we are in the desired range.
 This range is passed to the function as parameter, in this example, ```90``` %.  
 
-If the function detects, that the last result was overexposed it takes a short measurement (~10 ms) with the lowest quality and resolution and calculate from this value the new *Mtreg* and quality. This short measurement is blocking!  
+If the function detects, that the last result was overexposed, it takes a short measurement (~10 ms) with the lowest quality and resolution and calculate from this value the new *Mtreg* and quality. This short measurement is blocking!  
 
 If there are longer periods between the measurements, the last value is not so meaningful for a new calculation, because the brightness may have changed. In this case it would be better to alway's take a short measurement before the high resolution measurement. You will loose about 10 ms but at low intensities you do not have to repeat a 500 ms measurement.  
 You can easily force this with a second parameter for the function:  
