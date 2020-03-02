@@ -114,7 +114,7 @@ void setup()
 void loop()
 {
   if (sensor.hasValue()) {          //D: most important function of this library!
-    float lux = sensor.readLux();   //E: read the result
+    float lux = sensor.getLux();   //E: read the result
     sensor.start();          //F: start next measurement
   }
   // do a lot of other stuff here     G://
@@ -145,7 +145,7 @@ If you are satisfied with a blocking read, the code becomes even easier:
 void loop()
 {
   sensor.start();                 //start measurement
-  float lux = sensor.readLux();   //read the result
+  float lux = sensor.getLux();   //read the result
   
 }
 ```
@@ -205,7 +205,7 @@ With one line of code all this can be done for you!
 ```C++
 {
  if (sensor.hasValue()) {          
-   float lux = sensor.readLux();   
+   float lux = sensor.getLux();   
    sensor.adjustSettings(90);     //new line!
    sensor.start();          
  }
