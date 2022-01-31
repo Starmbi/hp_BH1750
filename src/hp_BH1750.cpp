@@ -422,7 +422,6 @@ unsigned int hp_BH1750::readValue()
 {
   byte buff[2];
   int i;
-  _wire->beginTransmission(_address);
   unsigned int req = _wire->requestFrom((int)_address, (int)2); // request two bytes
   if (req == 0)
   {
