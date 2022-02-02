@@ -2,7 +2,7 @@
 //  Datasheet https://www.mouser.com/datasheet/2/348/bh1750fvi-e-186247.pdf
 //  Donwnload library at https://github.com/Starmbi/hp_BH1750
 //  Help and infos are provided at https://github.com/Starmbi/hp_BH1750/wiki
-//  Copyright (c) Stefan Amrborst, 2020 
+//  Copyright (c) Stefan Armborst, 2020 
 
 #include <hp_BH1750.h>
 #include <Wire.h>
@@ -582,7 +582,8 @@ void hp_BH1750::calcSettings(unsigned int value, BH1750Quality &qual, byte &mtre
     percent = 100;
   _percent = percent;
   unsigned long highBound = value / (float)percent * 100;
-   unsigned long newMtreg = (float)BH1750_SATURATED / highBound * mtreg + .5;
+  unsigned long newMtreg = (float)BH1750_SATURATED / highBound * mtreg + .5;
+  if (value==0) value=1;
   switch (qual)
   {
     case BH1750_QUALITY_HIGH:
