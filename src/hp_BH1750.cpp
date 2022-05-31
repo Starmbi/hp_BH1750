@@ -41,7 +41,7 @@ bool hp_BH1750::begin(byte address, TwoWire *myWire)
 //********************************************************************************************
 // Returns the current quality  BH1750_QUALITY_HIGH = 0x20, BH1750_QUALITY_HIGH2 = 0x21, BH1750_QUALITY_LOW = 0x23
 
-BH1750Quality hp_BH1750::getQuality()
+BH1750Quality hp_BH1750::getQuality() const
 {
   return _quality;
 }
@@ -117,6 +117,7 @@ bool hp_BH1750::start()
   _processed = false; // Value not readed by user
   return result;
 }
+
 //********************************************************************************************
 // Start measurement and set quality and sensitivity
 bool hp_BH1750::start(BH1750Quality quality, byte mtreg)
@@ -252,7 +253,7 @@ unsigned int hp_BH1750::readChange(byte mtreg, BH1750Quality quality, bool chang
 //********************************************************************************************
 // Overloaded
 // Return the estimated time for a given combination of quality and sensitivity
-unsigned int hp_BH1750::getMtregTime(byte mtreg, BH1750Quality quality)
+unsigned int hp_BH1750::getMtregTime(byte mtreg, BH1750Quality quality) const
 {
   if (quality == BH1750_QUALITY_LOW)
   {
@@ -267,7 +268,7 @@ unsigned int hp_BH1750::getMtregTime(byte mtreg, BH1750Quality quality)
 //********************************************************************************************
 // Overloaded
 
-unsigned int hp_BH1750::getMtregTime()
+unsigned int hp_BH1750::getMtregTime() const
 {
   return getMtregTime(_mtreg, _quality);
 }
@@ -275,7 +276,7 @@ unsigned int hp_BH1750::getMtregTime()
 //********************************************************************************************
 // Overloaded
 
-unsigned int hp_BH1750::getMtregTime(byte mtreg)
+unsigned int hp_BH1750::getMtregTime(byte mtreg) const
 {
   return getMtregTime(mtreg, _quality);
 }
@@ -283,14 +284,14 @@ unsigned int hp_BH1750::getMtregTime(byte mtreg)
 //********************************************************************************************
 // Return current sensitivity
 
-byte hp_BH1750::getMtreg()
+byte hp_BH1750::getMtreg() const
 {
   return _mtreg;
 }
 
 //********************************************************************************************
 // Return last conversation time
-unsigned int hp_BH1750::getTime()
+unsigned int hp_BH1750::getTime() const
 {
   return _time;
 }
@@ -359,7 +360,7 @@ void hp_BH1750::setTimeOffset(int offset)
 
 //********************************************************************************************
 // Return the current offset
-int hp_BH1750::getTimeOffset()
+int hp_BH1750::getTimeOffset() const
 {
   return _offset;
 }
@@ -387,7 +388,7 @@ bool hp_BH1750::writeMtreg(byte mtreg)
 //********************************************************************************************
 // Return the physically reads form the sensor
 
-unsigned int hp_BH1750::getReads()
+unsigned int hp_BH1750::getReads() const
 {
   return _nReads;
 }
@@ -399,13 +400,10 @@ unsigned int hp_BH1750::getRaw()
 {
   if (_time > 0)
     return _value;
-  unsigned long mil;
-  ;
   yield();
   do
   {
     _value = readValue();
-    mil = millis();
   } while (_time == 0);
   _processed = true;
   return _value;
@@ -415,27 +413,23 @@ bool hp_BH1750::processed()
 {
   return _processed;
 }
+
 //********************************************************************************************
 // Private function that reads the value physically
 
 unsigned int hp_BH1750::readValue()
 {
   byte buff[2];
-  int i;
   unsigned int req = _wire->requestFrom((int)_address, (int)2); // request two bytes
-  if (req == 0)
+  if (req < 2 || _wire->available() < 2)
   {
     _time = 999;
     _value = 0;
     return _value; // Sensor not found or other problem
   }
 
-  while (_wire->available() > 0)
-  {
-    buff[0] = _wire->read(); // Receive one byte
-    buff[1] = _wire->read(); // Receive one byte
-  }
-  _wire->endTransmission();
+  buff[0] = _wire->read(); // Receive one byte
+  buff[1] = _wire->read(); // Receive one byte
   _nReads++; // Inc the physically count of reads
   _value = ((buff[0] << 8) | buff[1]);
 
@@ -450,10 +444,11 @@ unsigned int hp_BH1750::readValue()
 //********************************************************************************************
 // Get the current timeout in milliseconds
 
-unsigned int hp_BH1750::getTimeout()
+unsigned int hp_BH1750::getTimeout() const
 {
   return _timeout;
 }
+
 void hp_BH1750::setTimeout(int timeout)
 {
   _timeout = timeout;
@@ -462,7 +457,7 @@ void hp_BH1750::setTimeout(int timeout)
 //********************************************************************************************
 // Return all timing parameters, collected in a struct
 
-BH1750Timing hp_BH1750::getTiming()
+BH1750Timing hp_BH1750::getTiming() const
 {
   return _timing;
 }
@@ -489,10 +484,11 @@ byte hp_BH1750::convertTimeToMtreg(unsigned int time, BH1750Quality quality)
       v = (((float)time - (float)_timing.mtregLow_qualityHigh) * (_timing.mtregHigh - _timing.mtregLow)) / (_timing.mtregHigh_qualityHigh - _timing.mtregLow_qualityHigh) + _timing.mtregLow;
       break;
     case BH1750_QUALITY_LOW:
+    default:
       v = ((time - _timing.mtregLow_qualityLow) * (_timing.mtregHigh - _timing.mtregLow)) / (_timing.mtregHigh_qualityLow - _timing.mtregLow_qualityLow) + _timing.mtregLow;
       break;
   }
-  v = v + 0.5;
+  v += 0.5;
   byte tempMtreg;
   Serial.println(v);
   if (v < 0)
@@ -600,11 +596,14 @@ void hp_BH1750::calcSettings(unsigned int value, BH1750Quality &qual, byte &mtre
         qual = BH1750_QUALITY_HIGH;
         newMtreg = newMtreg * 2;
       }
+    case BH1750_QUALITY_LOW:
+    default: ;
   }
   if (newMtreg > BH1750_MTREG_HIGH)
     newMtreg = BH1750_MTREG_HIGH;
   mtreg = newMtreg;
 }
-byte hp_BH1750::getPercent() {
+
+byte hp_BH1750::getPercent() const {
   return _percent;
 }

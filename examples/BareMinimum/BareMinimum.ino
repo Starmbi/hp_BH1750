@@ -9,6 +9,10 @@ void setup()
   Serial.begin(9600);
   bool avail = BH1750.begin(BH1750_TO_GROUND);// init the sensor with address pin connetcted to ground
                                               // result (bool) wil be be "false" if no sensor found
+  if (!avail) {
+    Serial.println("No BH1750 sensor found!");
+    while (true) {};                                        
+  }
 }
 
 void loop()

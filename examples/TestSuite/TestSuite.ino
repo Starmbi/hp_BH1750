@@ -25,11 +25,11 @@ void printHelp()
   Serial.println(F("Enter \"m\" followed by a number between 31 to 254, to change the quality"));
   Serial.println(F("Enter \"c\" to calibrate the sensor timing"));
   Serial.println(F("Enter \"i\" to init the sensor to factory timing"));
-  Serial.println(F("Enter \"q\", followed by a number between 1 to 3, to change the quality"));
+  Serial.println(F("Enter \"q\" followed by a number between 1 to 3, to change the quality"));
   Serial.println(F("Enter \"a\" to toggle between fixed MTreg and AUTORANGE"));
   Serial.println(F("Enter \"s\" to toggle between all informations or only for Lux. Try serial plotter!"));
   Serial.println(F("Enter \"o\" with a positive or negative number to change the time offset"));
-  Serial.println(F("Enter \"t\"followed by a number to change the timeout in ms."));
+  Serial.println(F("Enter \"t\" followed by a number to change the timeout in ms."));
   Serial.println(F("Enter \"f\" to toggle between forced readings or only waiting for the estimated conversion time"));
   Serial.println(F("Enter \"r\" to toggle between forced preShots in autorange mode"));
   Serial.print(F("*********************************************************************************************"));
@@ -54,6 +54,7 @@ void flushQueue(unsigned int timeout)
     busyDelay(timeout);
   }
 }
+
 void waitKeyPress()
 {
   Serial.println(F(""));
@@ -64,6 +65,7 @@ void waitKeyPress()
   }
   flushQueue(3);
 }
+
 String getQual()
 {
   BH1750Quality q = BH1750.getQuality();
@@ -76,6 +78,7 @@ String getQual()
       return "High ";
       break;
     case BH1750_QUALITY_HIGH2:
+    default:
       return "High2";
       break;
   }
@@ -92,6 +95,7 @@ void printCalib()
   Serial.println(buf);
   Serial.println("");
 }
+
 void setup()
 {
   Serial.begin(9600);
