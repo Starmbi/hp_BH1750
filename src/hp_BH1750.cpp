@@ -409,7 +409,7 @@ unsigned int hp_BH1750::getRaw()
   return _value;
 }
 
-bool hp_BH1750::processed()
+bool hp_BH1750::processed() const
 {
   return _processed;
 }
@@ -515,14 +515,14 @@ float hp_BH1750::getLux()
 //********************************************************************************************
 // Calculate a given digital value (from getRaw()) to Lux
 
-float hp_BH1750::calcLux(int raw)
+float hp_BH1750::calcLux(int raw) const
 {
   return (float)raw / luxFactor * _qualFak * 69 / _mtreg;
 }
 
 // Calculate a given digital value (from getRaw()) to Lux
 
-float hp_BH1750::calcLux(int raw, BH1750Quality quality, int mtreg)
+float hp_BH1750::calcLux(int raw, BH1750Quality quality, int mtreg) const
 {
   float qualFak = 0.5;
   if (quality != BH1750_QUALITY_HIGH2)
@@ -532,7 +532,7 @@ float hp_BH1750::calcLux(int raw, BH1750Quality quality, int mtreg)
 
 // Check if last value is over 65535 raw data
 
-bool hp_BH1750::saturated()
+bool hp_BH1750::saturated() const
 {
   return (_value == BH1750_SATURATED);
 }

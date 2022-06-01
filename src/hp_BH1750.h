@@ -70,11 +70,11 @@ public:
   bool start();
   bool start(BH1750Quality quality, byte mtreg);
   bool hasValue(bool forceSensor = false);
-  bool processed();
-  bool saturated();
+  bool processed() const;
+  bool saturated() const;
   float getLux();
-  float calcLux(int raw);
-  float calcLux(int raw, BH1750Quality quality, int mtreg);
+  float calcLux(int raw) const;
+  float calcLux(int raw, BH1750Quality quality, int mtreg) const;
   float luxFactor = 1.2;
   void setTiming(BH1750Timing timing);
   BH1750Timing getTiming() const;
