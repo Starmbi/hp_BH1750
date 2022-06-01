@@ -10,8 +10,14 @@ void setup()
  
   bool avail = BH1750.begin(BH1750_TO_GROUND);   // will be false no sensor found
                                                  // use BH1750_TO_GROUND or BH1750_TO_VCC depending how you wired the address pin of the sensor.
+  if (!avail) {
+    Serial.println("No BH1750 sensor found!");
+    while (true) {};                                        
+  }
   
   // BH1750.calibrateTiming();  //uncomment this line if you want to speed up your sensor
+  Serial.printf("conversion time: %dms\n", BH1750.getMtregTime());
+  
   BH1750.start();               //start the first measurement in setup
 }
 

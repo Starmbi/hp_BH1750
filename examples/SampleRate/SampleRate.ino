@@ -26,7 +26,7 @@ void loop()
   //  put your main code here, to run repeatedly:
   Serial.println("***********");
   unsigned int t = millis() + 1000;
-  int c = 0;
+  unsigned int c = 0;
   while (millis() <= t)
   {
     sens.start(BH1750_QUALITY_LOW, 1); //will be adjusted to lowest allowed MTreg (default = 31)
@@ -36,18 +36,18 @@ void loop()
     }
     else
     {
-      unsigned int dummy = sens.getRaw();
+      sens.getRaw();
     }
     yield(); //  feed the watchdog of ESP6682
     c++;
   }
-  int readVal = c;
+  unsigned int readVal = c;
   if (readVal > MAX_VAL)
     c = MAX_VAL;
   // Serial.print(c);
   // Serial.print(char(9));
   // Serial.println(sens.getRaw());
-  for (int i = 0; i < c; i++)
+  for (unsigned int i = 0; i < c; i++)
   {
     //Serial.print(i);
     Serial.print(val[i]);
@@ -59,5 +59,6 @@ void loop()
   Serial.println("");
   Serial.print(readVal);
   Serial.println(" Samples per second");
+  Serial.println("");
   delay(1000);
 }

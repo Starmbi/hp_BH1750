@@ -70,31 +70,31 @@ public:
   bool start();
   bool start(BH1750Quality quality, byte mtreg);
   bool hasValue(bool forceSensor = false);
-  bool processed();
-  bool saturated();
+  bool processed() const;
+  bool saturated() const;
   float getLux();
-  float calcLux(int raw);
-  float calcLux(int raw, BH1750Quality quality, int mtreg);
+  float calcLux(int raw) const;
+  float calcLux(int raw, BH1750Quality quality, int mtreg) const;
   float luxFactor = 1.2;
   void setTiming(BH1750Timing timing);
-  BH1750Timing getTiming();
+  BH1750Timing getTiming() const;
 
-  BH1750Quality getQuality();
+  BH1750Quality getQuality() const;
 
   void setTimeout(int timeout);
 
   void setTimeOffset(int offset);
-  int getTimeOffset();
-  unsigned int getTimeout();
-  byte getMtreg();
+  int getTimeOffset() const;
+  unsigned int getTimeout() const;
+  byte getMtreg() const;
   byte convertTimeToMtreg(unsigned int time, BH1750Quality quality);
-  byte getPercent();
+  byte getPercent() const;
   unsigned int getRaw();
-  unsigned int getReads();
-  unsigned int getTime();
-  unsigned int getMtregTime();
-  unsigned int getMtregTime(byte mtreg);
-  unsigned int getMtregTime(byte mtreg, BH1750Quality quality);
+  unsigned int getReads() const;
+  unsigned int getTime() const;
+  unsigned int getMtregTime() const;
+  unsigned int getMtregTime(byte mtreg) const;
+  unsigned int getMtregTime(byte mtreg, BH1750Quality quality) const;
 
   bool adjustSettings(byte percent = 50, bool forcePreShot = false);
   void calcSettings(unsigned int value, BH1750Quality &qual, byte &mtreg, byte percent);
