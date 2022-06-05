@@ -577,16 +577,16 @@ void hp_BH1750::calcSettings(unsigned int value, BH1750Quality &qual, byte &mtre
   if (percent > 100)
     percent = 100;
   _percent = percent;
-  unsigned long highBound = value / (float)percent * 100;
+  if (value==0)
+    value=1;
+  float highBound = value / (float)percent * 100;
   unsigned long newMtreg = (float)BH1750_SATURATED / highBound * mtreg + .5;
-  if (value==0) value=1;
   switch (qual)
   {
     case BH1750_QUALITY_HIGH:
       if (newMtreg >= BH1750_MTREG_LOW * 2)
-      //if (newMtreg > BH1750_MTREG_LOW * 2)
       {
-        newMtreg = newMtreg / 2;
+        newMtreg /= 2;
         qual = BH1750_QUALITY_HIGH2;
       }
       break;
@@ -594,7 +594,7 @@ void hp_BH1750::calcSettings(unsigned int value, BH1750Quality &qual, byte &mtre
       if (newMtreg < BH1750_MTREG_LOW)
       {
         qual = BH1750_QUALITY_HIGH;
-        newMtreg = newMtreg * 2;
+        newMtreg *= 2;
       }
     case BH1750_QUALITY_LOW:
     default: ;
