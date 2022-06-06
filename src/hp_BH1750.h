@@ -88,7 +88,7 @@ public:
   unsigned int getTimeout() const;
   byte getMtreg() const;
   byte convertTimeToMtreg(unsigned int time, BH1750Quality quality);
-  byte getPercent() const;
+  float getPercent() const;
   unsigned int getRaw();
   unsigned int getReads() const;
   unsigned int getTime() const;
@@ -96,8 +96,8 @@ public:
   unsigned int getMtregTime(byte mtreg) const;
   unsigned int getMtregTime(byte mtreg, BH1750Quality quality) const;
 
-  bool adjustSettings(byte percent = 50, bool forcePreShot = false);
-  void calcSettings(unsigned int value, BH1750Quality &qual, byte &mtreg, byte percent);
+  bool adjustSettings(float percent = 50.0, bool forcePreShot = false);
+  void calcSettings(unsigned int value, BH1750Quality &qual, byte &mtreg, float percent);
 
 private:
   TwoWire *_wire;
