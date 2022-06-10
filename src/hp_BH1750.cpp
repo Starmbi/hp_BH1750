@@ -553,7 +553,7 @@ bool hp_BH1750::saturated() const
 // switch between this values when requiered
 // If you use the fast, but low qualtiy BH1750_QUALITY_LOW = 0x23, the function will not change this quality.
 
-bool hp_BH1750::adjustSettings(byte percent, bool forcePreShot)
+bool hp_BH1750::adjustSettings(float percent, bool forcePreShot)
 {
   if (_value == BH1750_SATURATED || forcePreShot == true) // If last result is saturated, perfom a measurement at low sensitivity
   {
@@ -572,21 +572,21 @@ bool hp_BH1750::adjustSettings(byte percent, bool forcePreShot)
 // You have to declare the variables BH1750Quality and mtreg bevore calling this function
 // After calling this function this variables contain the appropiate values
 
-void hp_BH1750::calcSettings(unsigned int value, BH1750Quality &qual, byte &mtreg, byte percent)
+void hp_BH1750::calcSettings(unsigned int value, BH1750Quality &qual, byte &mtreg, float percent)
 {
-  if (percent > 100)
-    percent = 100;
+  if (percent > 100.0)
+    percent = 100.0;
   _percent = percent;
-  unsigned long highBound = value / (float)percent * 100;
+  if (value==0)
+    value=1;
+  float highBound = value / percent * 100.0;
   unsigned long newMtreg = (float)BH1750_SATURATED / highBound * mtreg + .5;
-  if (value==0) value=1;
   switch (qual)
   {
     case BH1750_QUALITY_HIGH:
       if (newMtreg >= BH1750_MTREG_LOW * 2)
-      //if (newMtreg > BH1750_MTREG_LOW * 2)
       {
-        newMtreg = newMtreg / 2;
+        newMtreg /= 2;
         qual = BH1750_QUALITY_HIGH2;
       }
       break;
@@ -594,7 +594,7 @@ void hp_BH1750::calcSettings(unsigned int value, BH1750Quality &qual, byte &mtre
       if (newMtreg < BH1750_MTREG_LOW)
       {
         qual = BH1750_QUALITY_HIGH;
-        newMtreg = newMtreg * 2;
+        newMtreg *= 2;
       }
     case BH1750_QUALITY_LOW:
     default: ;
@@ -604,6 +604,6 @@ void hp_BH1750::calcSettings(unsigned int value, BH1750Quality &qual, byte &mtre
   mtreg = newMtreg;
 }
 
-byte hp_BH1750::getPercent() const {
+float hp_BH1750::getPercent() const {
   return _percent;
 }
